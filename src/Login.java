@@ -1,7 +1,4 @@
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.List;
 
 public class Login extends User {
 
@@ -22,7 +19,7 @@ public class Login extends User {
             stmt = conn.createStatement(); //创建Statement对象
             System.out.println("成功连接到数据库！");
 
-            String sql = String.format("select password from candyUser where username = '%s'", getUsername());
+            String sql = String.format("select password from candyUser where username = '%s' AND identity = '%s'", getUsername(), getIdentity());
             String psw = dbGetPassword(sql);
 
             if (psw.equals("")) {

@@ -6,22 +6,15 @@ import org.jdatepicker.impl.UtilDateModel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
-import java.util.List;
 
 public class GUI {
-
     private Login login;
     private Register register;
     private Job job;
@@ -142,6 +135,7 @@ public class GUI {
         JPanel jpLogin = new JPanel();
         jpLogin.setLayout(null);
 
+        JButton jbBack = new JButton("Back");
         JLabel jlLoginLabel = new JLabel("Please log into your account...");
         jlUsername = new JLabel("Username:");
         jlPassword = new JLabel("Password:");
@@ -151,6 +145,7 @@ public class GUI {
         JLabel jlGoRegisterLabel = new JLabel("Don't have an account?");
         JButton jbGoRegister = new JButton("Go To Register");
 
+        jpLogin.add(jbBack);
         jpLogin.add(jlLoginLabel);
         jpLogin.add(jlUsername);
         jpLogin.add(jtfUsername);
@@ -160,6 +155,7 @@ public class GUI {
         jpLogin.add(jlGoRegisterLabel);
         jpLogin.add(jbGoRegister);
 
+        jbBack.setBounds(20, 20, 100, 30);
         jlLoginLabel.setBounds(200, 50, 200, 30);
         jlUsername.setBounds(200, 100, 100, 30);
         jtfUsername.setBounds(300, 100, 100, 30);
@@ -169,19 +165,14 @@ public class GUI {
         jlGoRegisterLabel.setBounds(230, 470, 160, 30);
         jbGoRegister.setBounds(220, 500, 160, 30);
 
-        jbLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clickButtonLogin();
-            }
+        jbBack.addActionListener(e -> {
+            jfChooseIdentity.setVisible(true);
+            jfLogin.setVisible(false);
         });
 
-        jbGoRegister.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                registerPage();
-            }
-        });
+        jbLogin.addActionListener(e -> clickButtonLogin());
+
+        jbGoRegister.addActionListener(e -> registerPage());
 
         jpfPassword.addKeyListener(new KeyAdapter() {
             @Override
@@ -240,6 +231,7 @@ public class GUI {
         JPanel jpRegister = new JPanel();
         jpRegister.setLayout(null);
 
+        JButton jbBack = new JButton("Back");
         JLabel jlRegisterLabel = new JLabel("Please register your new account...");
         jlUsername = new JLabel("Username:");
         jlPassword = new JLabel("Password:");
@@ -249,6 +241,7 @@ public class GUI {
         jpfConfirm = new JPasswordField();
         JButton jbRegister = new JButton("Register");
 
+        jpRegister.add(jbBack);
         jpRegister.add(jlRegisterLabel);
         jpRegister.add(jlUsername);
         jpRegister.add(jtfUsername);
@@ -258,6 +251,7 @@ public class GUI {
         jpRegister.add(jpfConfirm);
         jpRegister.add(jbRegister);
 
+        jbBack.setBounds(20, 20, 100, 30);
         jlRegisterLabel.setBounds(200, 50, 200, 30);
         jlUsername.setBounds(200, 100, 100, 30);
         jtfUsername.setBounds(300, 100, 100, 30);
@@ -267,12 +261,12 @@ public class GUI {
         jpfConfirm.setBounds(300, 200, 100, 30);
         jbRegister.setBounds(260, 250, 80, 30);
 
-        jbRegister.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clickButtonRegister();
-            }
+        jbBack.addActionListener(e -> {
+            jfRegister.setVisible(false);
+            jfLogin.setVisible(true);
         });
+
+        jbRegister.addActionListener(e -> clickButtonRegister());
 
         jfRegister.setContentPane(jpRegister);
         jfRegister.setVisible(true);
@@ -322,6 +316,8 @@ public class GUI {
         jpAllJobs.setLayout(null);
 
         // create filter panel
+        JButton jbLogout = new JButton("Log Out");
+
         JLabel jlFilterCompany = new JLabel("Company:");
         JLabel jlFilterPosition = new JLabel("Position:");
         JLabel jlFilterLocation = new JLabel("Location:");
@@ -345,6 +341,7 @@ public class GUI {
 
         JButton jbFilter = new JButton("Filter");
 
+        jpFilter.add(jbLogout);
         jpFilter.add(jlFilterCompany);
         jpFilter.add(jlFilterPosition);
         jpFilter.add(jlFilterLocation);
@@ -358,6 +355,8 @@ public class GUI {
         jpFilter.add(comboxFilterReturnOffer);
         jpFilter.add(comboxFilterRemote);
         jpFilter.add(jbFilter);
+
+        jbLogout.setBounds(480, 20, 100, 30);
 
         jlFilterCompany.setBounds(20, 70, 80, 30);
         jtfFilterCompany.setBounds(100, 70, 100, 30);
@@ -388,12 +387,9 @@ public class GUI {
 
         jfStudent.setVisible(true);
 
-        jbFilter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                filterJobs();
-            }
-        });
+        jbLogout.addActionListener(e -> logout(jfStudent));
+
+        jbFilter.addActionListener(e -> filterJobs());
     }
 
     public void filterJobs() {
@@ -423,14 +419,17 @@ public class GUI {
         jfHR.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JSplitPane jspHR = new JSplitPane();
-        JPanel jpAdd = new JPanel();
+        JPanel jpTop = new JPanel();
         jpAllJobs = new JPanel();
-        jpAdd.setLayout(null);
+        jpTop.setLayout(null);
         jpAllJobs.setLayout(null);
 
-        // create add new job panel
+        // create add top panel
+        JButton jbLogout = new JButton("Log Out");
         JButton jbAddNewJob = new JButton("Add A New Job");
-        jpAdd.add(jbAddNewJob);
+        jpTop.add(jbLogout);
+        jpTop.add(jbAddNewJob);
+        jbLogout.setBounds(480, 20, 100, 30);
         jbAddNewJob.setBounds(200, 70, 200, 30);
 
         // create jobs panel
@@ -446,10 +445,12 @@ public class GUI {
         jfHR.setContentPane(jspHR);
         jspHR.setOrientation(JSplitPane.VERTICAL_SPLIT);
         jspHR.setDividerLocation(120);
-        jspHR.setTopComponent(jpAdd);
+        jspHR.setTopComponent(jpTop);
         jspHR.setBottomComponent(jpAllJobs);
 
         jfHR.setVisible(true);
+
+        jbLogout.addActionListener(e -> logout(jfHR));
 
         jbAddNewJob.addActionListener(e -> {
             action = "add";
@@ -465,9 +466,19 @@ public class GUI {
         jfStudentJobDetail.setLocationRelativeTo(null);
         jfStudentJobDetail.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel jpStudentJobDetail = new JPanel();
-        jpStudentJobDetail.setLayout(null);
+        JSplitPane jsplitpStudent = new JSplitPane();
 
+        // create top panel (back, logout)
+        JPanel jpTop = new JPanel();
+        jpTop.setLayout(null);
+        JButton jbBack = new JButton("Back");
+        JButton jbLogout = new JButton("Log Out");
+        jpTop.add(jbBack);
+        jpTop.add(jbLogout);
+        jbBack.setBounds(20, 20, 100, 30);
+        jbLogout.setBounds(480, 20, 100, 30);
+
+        // create job detail panel (scrollable)
         ArrayList<String> jobDetail = job.view().get(0);
         String detail = String.format("Company: %s\nPosition: %s\n%s\n%s\n%s\n\n" +
                         "Duties:\n%s\n\nRequirements:\n%s\n\nBenefits:\n%s\n\n" +
@@ -482,16 +493,28 @@ public class GUI {
                 jobDetail.get(9), jobDetail.get(10),
                 jobDetail.get(12), jobDetail.get(13),
                 jobDetail.get(14), jobDetail.get(15), jobDetail.get(16));
-        JTextArea jtaJobDetail = new JTextArea(detail);
+        JTextArea jtaStudentJobDetail = new JTextArea(detail);
+        jtaStudentJobDetail.setEditable(false);
+        jtaStudentJobDetail.setColumns(20);
+        jtaStudentJobDetail.setRows(100);
+        jtaStudentJobDetail.setLineWrap(false);
+        JScrollPane jspStudentJobDetail = new JScrollPane(jtaStudentJobDetail);
+        jtaStudentJobDetail.setBackground(null);
 
-        jtaJobDetail.setBackground(null);
+        jfStudentJobDetail.setContentPane(jsplitpStudent);
+        jsplitpStudent.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        jsplitpStudent.setDividerLocation(70);
+        jsplitpStudent.setTopComponent(jpTop);
+        jsplitpStudent.setBottomComponent(jspStudentJobDetail);
 
-        jpStudentJobDetail.add(jtaJobDetail);
-
-        jtaJobDetail.setBounds(50, 70, 500, 500);
-
-        jfStudentJobDetail.setContentPane(jpStudentJobDetail);
         jfStudentJobDetail.setVisible(true);
+
+        jbBack.addActionListener(e -> {
+            jfStudent.setVisible(true);
+            jfStudentJobDetail.setVisible(false);
+        });
+
+        jbLogout.addActionListener(e -> logout(jfStudentJobDetail));
     }
 
     public void hrJobDetailPage() {
@@ -502,9 +525,20 @@ public class GUI {
         jfHRJobDetail.setLocationRelativeTo(null);
         jfHRJobDetail.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel jpHRJobDetail = new JPanel();
-        jpHRJobDetail.setLayout(null);
+        JSplitPane jsplitpHR = new JSplitPane();
+        JSplitPane jsplitpHRJob = new JSplitPane();
 
+        // create top panel (back, logout)
+        JPanel jpTop = new JPanel();
+        jpTop.setLayout(null);
+        JButton jbBack = new JButton("Back");
+        JButton jbLogout = new JButton("Log Out");
+        jpTop.add(jbBack);
+        jpTop.add(jbLogout);
+        jbBack.setBounds(20, 20, 100, 30);
+        jbLogout.setBounds(480, 20, 100, 30);
+
+        // create center panel (detail)
         ArrayList<String> jobDetail = job.view().get(0);
         String detail = String.format("Company: %s\nPosition: %s\n%s\n%s\n%s\n\n" +
                         "Duties:\n%s\n\nRequirements:\n%s\n\nBenefits:\n%s\n\n" +
@@ -519,50 +553,66 @@ public class GUI {
                 jobDetail.get(9), jobDetail.get(10),
                 jobDetail.get(12), jobDetail.get(13),
                 jobDetail.get(14), jobDetail.get(15), jobDetail.get(16));
-        JTextArea jtaJobDetail = new JTextArea(detail);
-        jtaJobDetail.setBackground(null);
+        JTextArea jtaHRJobDetail = new JTextArea(detail);
+        jtaHRJobDetail.setEditable(false);
+        jtaHRJobDetail.setColumns(20);
+        jtaHRJobDetail.setRows(100);
+        jtaHRJobDetail.setLineWrap(false);
+        JScrollPane jspHRJobDetail = new JScrollPane(jtaHRJobDetail);
+        jtaHRJobDetail.setBackground(null);
 
-        jpHRJobDetail.add(jtaJobDetail);
-        jtaJobDetail.setBounds(50, 70, 500, 430);
-
+        // create bottom panel (edit, delete)
+        JPanel jpOperation = new JPanel();
+        jpOperation.setLayout(null);
         JButton jbEdit = new JButton("Edit");
         JButton jbDelete = new JButton("Delete");
-        jpHRJobDetail.add(jbEdit);
-        jpHRJobDetail.add(jbDelete);
-        jbEdit.setBounds(150, 530, 100, 30);
-        jbDelete.setBounds(350, 530, 100, 30);
+        jpOperation.add(jbEdit);
+        jpOperation.add(jbDelete);
+        jbEdit.setBounds(150, 20, 100, 30);
+        jbDelete.setBounds(350, 20, 100, 30);
 
-        jbEdit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                action = "edit";
-                editAJob();
+        jbEdit.addActionListener(e -> {
+            action = "edit";
+            editAJob();
+        });
+
+        jbDelete.addActionListener(e -> {
+            //Custom button text
+            Object[] options = {"Yes", "No",};
+            int choice = JOptionPane.showOptionDialog(jfHRJobDetail,
+                    "Are you sure to DELETE this job?",
+                    "DELETE",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+
+            if (choice == 0) {
+                // delete
+                deleteAJob();
             }
         });
 
-        jbDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Custom button text
-                Object[] options = {"Yes", "No",};
-                int choice = JOptionPane.showOptionDialog(jfHRJobDetail,
-                        "Are you sure to DELETE this job?",
-                        "DELETE",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE,
-                        null,
-                        options,
-                        options[1]);
+        jsplitpHR.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        jsplitpHR.setDividerLocation(70);
+        jsplitpHR.setTopComponent(jpTop);
+        jsplitpHR.setBottomComponent(jsplitpHRJob);
 
-                if (choice == 0) {
-                    // delete
-                    deleteAJob();
-                }
-            }
-        });
+        jsplitpHRJob.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        jsplitpHRJob.setDividerLocation(400);
+        jsplitpHRJob.setTopComponent(jspHRJobDetail);
+        jsplitpHRJob.setBottomComponent(jpOperation);
 
-        jfHRJobDetail.setContentPane(jpHRJobDetail);
+        jfHRJobDetail.setContentPane(jsplitpHR);
         jfHRJobDetail.setVisible(true);
+
+        jbBack.addActionListener(e -> {
+            jfHR.setVisible(true);
+            jfHRJobDetail.setVisible(false);
+        });
+
+        jbLogout.addActionListener(e -> logout(jfHRJobDetail));
     }
 
     public void editAJob() {
@@ -583,7 +633,7 @@ public class GUI {
         jtaApplyLink.setText(detail.get(12));
         jtaApplyInstruction.setText(detail.get(13));
         model.setYear(Integer.parseInt(detail.get(14).substring(0, 4)));
-        model.setMonth(Integer.parseInt(detail.get(14).substring(5, 7)));
+        model.setMonth(Integer.parseInt(detail.get(14).substring(5, 7)) - 1);
         model.setDay(Integer.parseInt(detail.get(14).substring(8)));
         model.setSelected(true);
         jtaOtherInfo.setText(detail.get(15));
@@ -595,7 +645,7 @@ public class GUI {
     }
 
     public void jobInputPage() {
-        jfHRJobDetail.setVisible(false);
+        jfHR.setVisible(false);
 
         jfJobInput = new JFrame("Hi, " + login.getUsername());
         jfJobInput.setSize(frameWidth, frameHeight);
@@ -606,6 +656,9 @@ public class GUI {
 
         JPanel jpBack = new JPanel();
         jpBack.setLayout(null);
+        JButton jbBack = new JButton("Back");
+        jpBack.add(jbBack);
+        jbBack.setBounds(20, 20, 100, 30);
 
         JPanel jpJobInput = new JPanel();
         JScrollPane jspJobInput = new JScrollPane(jpJobInput, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -614,7 +667,7 @@ public class GUI {
         jspJobInput.setPreferredSize(new Dimension(frameWidth, frameHeight));
 
         // create widgets
-        JLabel jlCompany = new JLabel("Company:");
+        JLabel jlCompany = new JLabel("*Company:");
         jtaCompany = new JTextArea();
         jtaCompany.setEditable(true);
         jtaCompany.setColumns(20);
@@ -622,7 +675,7 @@ public class GUI {
         jtaCompany.setLineWrap(false);
         JScrollPane jspCompany = new JScrollPane(jtaCompany);
 
-        JLabel jlPosition = new JLabel("Position:");
+        JLabel jlPosition = new JLabel("*Position:");
         jtaPosition = new JTextArea();
         jtaPosition.setEditable(true);
         jtaPosition.setColumns(20);
@@ -635,24 +688,14 @@ public class GUI {
         btngrpInstancy = new ButtonGroup();
         btngrpInstancy.add(radioBtnIns);
         btngrpInstancy.add(radioBtnInsN);
-//        ActionListener sliceActionListenerInstancy = actionEvent -> {
-//            aBtnInstancy = (AbstractButton) actionEvent.getSource();
-//        };
-//        radioBtnIns.addActionListener(sliceActionListenerInstancy);
-//        radioBtnInsN.addActionListener(sliceActionListenerInstancy);
 
         radioBtnRet = new JRadioButton("Has Return Offer");
         radioBtnRetN = new JRadioButton("No Return Offer");
         btngrpReturnOffer = new ButtonGroup();
         btngrpReturnOffer.add(radioBtnRet);
         btngrpReturnOffer.add(radioBtnRetN);
-//        ActionListener sliceActionListenerReturnOffer = actionEvent -> {
-//            aBtnReturnOffer = (AbstractButton) actionEvent.getSource();
-//        };
-//        radioBtnRet.addActionListener(sliceActionListenerReturnOffer);
-//        radioBtnRetN.addActionListener(sliceActionListenerReturnOffer);
 
-        JLabel jlDuty = new JLabel("Duty:");
+        JLabel jlDuty = new JLabel("*Duty:");
         jtaDuty = new JTextArea();
         jtaDuty.setEditable(true); // 设置输入框允许编辑
         jtaDuty.setColumns(20); // 设置输入框的长度为14个字符
@@ -684,7 +727,7 @@ public class GUI {
         jtaInternTime.setLineWrap(false);
         JScrollPane jspInternTime = new JScrollPane(jtaInternTime);
 
-        JLabel jlLocation = new JLabel("Location:");
+        JLabel jlLocation = new JLabel("*Location:");
         jtaLocation = new JTextArea();
         jtaLocation.setEditable(true);
         jtaLocation.setColumns(20);
@@ -697,13 +740,8 @@ public class GUI {
         btngrpRemote = new ButtonGroup();
         btngrpRemote.add(radioBtnRem);
         btngrpRemote.add(radioBtnRemN);
-//        ActionListener sliceActionListenerRemote = actionEvent -> {
-//            aBtnRemote = (AbstractButton) actionEvent.getSource();
-//        };
-//        radioBtnRem.addActionListener(sliceActionListenerRemote);
-//        radioBtnRemN.addActionListener(sliceActionListenerRemote);
 
-        JLabel jlApplyLink = new JLabel("Apply Link:");
+        JLabel jlApplyLink = new JLabel("*Apply Link:");
         jtaApplyLink = new JTextArea();
         jtaApplyLink.setEditable(true);
         jtaApplyLink.setColumns(20);
@@ -719,8 +757,10 @@ public class GUI {
         jtaApplyInstruction.setLineWrap(false);
         JScrollPane jspApplyInstruction = new JScrollPane(jtaApplyInstruction);
 
-        JLabel jlDeadline = new JLabel("Deadline:");
+        JLabel jlDeadline = new JLabel("*Deadline:");
         model = new UtilDateModel();
+        model.setDate(LocalDate.now().getYear(), LocalDate.now().getMonthValue()-1, LocalDate.now().getDayOfMonth());
+        model.setSelected(true);
         Properties p = new Properties();
         p.put("text.today", "Today");
         p.put("text.month", "Month");
@@ -807,16 +847,35 @@ public class GUI {
         jfJobInput.setVisible(true);
 
         jbSubmit.addActionListener(e -> submitAJob());
+
+        jbBack.addActionListener(e -> {
+            //Custom button text
+            Object[] options = {"Yes", "No",};
+            int choice = JOptionPane.showOptionDialog(jfJobInput,
+                    "You haven't save this editing. Are you sure to exit?",
+                    "NOT SAVE",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+
+            if (choice == 0) {
+                // back
+                jfJobInput.setVisible(false);
+                jfHR.setVisible(true);
+            }
+        });
     }
 
     private void submitAJob() {
         job.company = jtaCompany.getText();
         job.position = jtaPosition.getText();
         if (radioBtnIns.isSelected() || radioBtnInsN.isSelected()) {
-            job.instancy = (radioBtnIns.isSelected()) ? true: false;
+            job.instancy = (radioBtnIns.isSelected()) ? true : false;
         }
         if (radioBtnRet.isSelected() || radioBtnRetN.isSelected()) {
-            job.returnOffer = (radioBtnRet.isSelected()) ? true: false;
+            job.returnOffer = (radioBtnRet.isSelected()) ? true : false;
         }
         job.duty = jtaDuty.getText();
         job.requirement = jtaRequirement.getText();
@@ -824,7 +883,7 @@ public class GUI {
         job.internTime = jtaInternTime.getText();
         job.location = jtaLocation.getText();
         if (radioBtnRem.isSelected() || radioBtnRemN.isSelected()) {
-            job.remote = (radioBtnRem.isSelected()) ? true: false;
+            job.remote = (radioBtnRem.isSelected()) ? true : false;
         }
         job.applyLink = jtaApplyLink.getText();
         job.applyInstruction = jtaApplyInstruction.getText();
@@ -833,11 +892,14 @@ public class GUI {
         job.otherInfo = jtaOtherInfo.getText();
         job.intro = jtaIntro.getText();
 
-        boolean status = job.submit(action);
+        String status = job.submit(action);
 
-        if (status == false) {
+        if (status.equals("incomplete")) {
             // warning of required text areas not complete jumps out
-            JOptionPane.showMessageDialog(jfJobInput, "Some required areas incomplete!", "INCOMPLETE", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(jfJobInput, "*'s and radio buttons are required!", "INCOMPLETE", JOptionPane.WARNING_MESSAGE);
+        } else if (status.equals("SQL error")) {
+            // warning of input error jumps out
+            JOptionPane.showMessageDialog(jfJobInput, "Do not include quotation marks in your input!", "ERROR", JOptionPane.WARNING_MESSAGE);
         } else {
             jfJobInput.setVisible(false);
 
@@ -915,7 +977,7 @@ public class GUI {
         table.getTableHeader().getColumnModel().getColumn(2).setMinWidth(275);
 
         // 设置点击表头自动实现排序
-        table.setAutoCreateRowSorter(false);
+        table.setAutoCreateRowSorter(true);
 
         // 设置表头文字居中显示
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
@@ -927,6 +989,28 @@ public class GUI {
         table.setDefaultRenderer(Object.class, r);
         table.setFocusable(false);
         table.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+    }
+
+    private void logout(JFrame jf) {
+        // jump out the warning window
+        //Custom button text
+        Object[] options = {"Yes", "No",};
+        int choice = JOptionPane.showOptionDialog(jf,
+                "Are you sure to log out?",
+                "LOGOUT",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                options,
+                options[1]);
+
+        if (choice == 0) {
+            // log out
+            jf.setVisible(false);
+            jfChooseIdentity.setVisible(true);
+            jtfUsername.setText("");
+            jpfPassword.setText("");
+        }
     }
 }
 

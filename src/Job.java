@@ -1,13 +1,8 @@
-import javax.management.relation.RoleUnresolvedList;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import static com.mysql.cj.MysqlType.JSON;
 
 
 public class Job extends User {
@@ -213,14 +208,17 @@ public class Job extends User {
             System.out.println("成功连接到数据库！");
 
             String sql = String.format("insert into candyJob (username,company,position,instancy," +
-                            "returnOffer,duty,requirement,benefit,internTime,location,remote,applyLink," +
+                            "returnOffer,duty,requirement,benefit,internTime," +
+                            "location,remote,applyLink," +
                             "applyInstruction,deadline,otherInfo,intro) " +
                             "values('%s','%s','%s',%b," +
-                            "%b,'%s','%s','%s','%s','%s',%b,'%s'," +
+                            "%b,'%s','%s','%s','%s'," +
+                            "'%s',%b,'%s'," +
                             "'%s','%s','%s','%s')",
-                    getUsername(), company, position, instancy,
-                    returnOffer, duty, requirement, benefit, internTime, location, remote, applyLink,
-                    applyInstruction, deadline, otherInfo, intro);
+                    getUsername(), rplQuo(company), rplQuo(position), instancy,
+                    returnOffer, rplQuo(duty), rplQuo(requirement), rplQuo(benefit), rplQuo(internTime),
+                    rplQuo(location), remote, rplQuo(applyLink),
+                    rplQuo(applyInstruction), deadline, rplQuo(otherInfo), rplQuo(intro));
             dbUpdateData(sql);
 
             emptyJobFields();
@@ -228,7 +226,6 @@ public class Job extends User {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         } finally {
             try {
                 if (stmt != null) stmt.close();
@@ -241,6 +238,7 @@ public class Job extends User {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     public boolean editAJob() {
@@ -257,10 +255,10 @@ public class Job extends User {
                             "returnOffer=%d,duty='%s',requirement='%s',benefit='%s',internTime='%s'," +
                             "location='%s',remote=%d,applyLink='%s',applyInstruction='%s'," +
                             "deadline='%s',otherInfo='%s',intro='%s' WHERE id = %d",
-                    company, position, (instancy) ? 1 : 0,
-                    (returnOffer) ? 1 : 0, duty, requirement, benefit, internTime,
-                    location, (remote) ? 1 : 0, applyLink, applyInstruction,
-                    deadline, otherInfo, intro, id);
+                    rplQuo(company), rplQuo(position), (instancy) ? 1 : 0,
+                    (returnOffer) ? 1 : 0, rplQuo(duty), rplQuo(requirement), rplQuo(benefit), rplQuo(internTime),
+                    rplQuo(location), (remote) ? 1 : 0, rplQuo(applyLink), rplQuo(applyInstruction),
+                    deadline, rplQuo(otherInfo), rplQuo(intro), id);
             dbUpdateData(sql);
 
             emptyJobFields();
@@ -268,7 +266,6 @@ public class Job extends User {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         } finally {
             try {
                 if (stmt != null) stmt.close();
@@ -281,6 +278,7 @@ public class Job extends User {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     public boolean deleteAJob() {
@@ -314,16 +312,22 @@ public class Job extends User {
         }
     }
 
-    public boolean submit(String action) {
+    public String submit(String action) {
         if (checkCpl()) {
             if (action.equals("add")) {
-                addNewJob();
+                boolean status = addNewJob();
+                if (status == false) {
+                    return "SQL error";
+                }
             } else {
-                editAJob();
+                boolean status = editAJob();
+                if (status == false) {
+                    return "SQL error";
+                }
             }
-            return true;
+            return "ok";
         } else {
-            return false;
+            return "incomplete";
         }
     }
 
@@ -379,6 +383,11 @@ public class Job extends User {
             }
         }
         return li;
+    }
+
+    // replaceQuotationMarks()
+    private String rplQuo(String str) {
+        return str.replace("'","\\\'").replace("\"","\\\"");
     }
 
     public String[][] aList2Arr(ArrayList<ArrayList<String>> data) {

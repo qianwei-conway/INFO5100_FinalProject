@@ -1,10 +1,5 @@
-import javax.swing.*;
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.List;
+
 
 public class Register extends User {
     private String reenterPassword;

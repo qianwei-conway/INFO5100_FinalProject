@@ -1,12 +1,14 @@
 import java.sql.DriverManager;
 
 public class Register extends User {
+    // initiate a variable for reenter password
     private String reenterPassword;
 
     public Register() {
     }
 
-    public String register() {
+    // this function aims at telling how the register process is doing
+    protected String register() {
         Boolean checkUsername = checkUsername();
         // Username is okay
         if (checkUsername == true) {
@@ -27,15 +29,12 @@ public class Register extends User {
         }
     }
 
-    public Boolean checkUsername() {
+    // this function aims at checking if username is already exist
+    private Boolean checkUsername() {
         try {
-            // 调用Class.forName()方法加载驱动程序
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("成功加载MySQL驱动！");
-
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");//url 账号 密码
-            stmt = conn.createStatement(); //创建Statement对象
-            System.out.println("成功连接到数据库！");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            stmt = conn.createStatement();
 
             String sql = String.format("select password from candyUser where username = '%s'", getUsername());
             String psw = dbGetPassword(sql);
@@ -62,7 +61,8 @@ public class Register extends User {
         }
     }
 
-    public boolean checkPasswordMatch() {
+    // this function aims at checking if two password enterings match
+    private boolean checkPasswordMatch() {
         if (getPassword().equals(reenterPassword)) {
             return true;
         } else {
@@ -70,15 +70,12 @@ public class Register extends User {
         }
     }
 
-    public void addNewUser() {
+    // this function aims at inserting a new user into database
+    private void addNewUser() {
         try {
-            // 调用Class.forName()方法加载驱动程序
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("成功加载MySQL驱动！");
-
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");//url 账号 密码
-            stmt = conn.createStatement(); //创建Statement对象
-            System.out.println("成功连接到数据库！");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            stmt = conn.createStatement();
 
             String sql = String.format("insert into candyUser (identity,username,password) values('%s','%s','%s')", getIdentity(), getUsername(), getPassword());
             dbUpdateData(sql);
@@ -98,11 +95,8 @@ public class Register extends User {
         }
     }
 
+    // Setter and Getter functions
     public void setReenterPassword(String reenterPassword) {
         this.reenterPassword = reenterPassword;
-    }
-
-    protected String getReenterPassword() {
-        return reenterPassword;
     }
 }

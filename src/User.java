@@ -2,28 +2,27 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class User {
+    // initiate variables for a user information
     private String identity;
     private String username;
     private String password;
 
+    // initiate variables for database operation
     protected Connection conn;
     protected Statement stmt;
 
     public User() {
     }
 
+    // this function aims at returning all data that sql clause wants
     protected ArrayList<ArrayList<String>> dbGetData(String sql, int colNum) {
         ArrayList<ArrayList<String>> list = new ArrayList<>();
         try {
-            // 调用Class.forName()方法加载驱动程序
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("成功加载MySQL驱动！");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            stmt = conn.createStatement();
 
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");//url 账号 密码
-            stmt = conn.createStatement(); //创建Statement对象
-            System.out.println("成功连接到数据库！");
-
-            ResultSet rs = stmt.executeQuery(sql);//创建数据对象
+            ResultSet rs = stmt.executeQuery(sql);// create data object
 
             while (rs.next()) {
                 ArrayList<String> li = new ArrayList<>();
@@ -51,18 +50,15 @@ public class User {
         return list;
     }
 
+    // this function aims at returning the password in database for checking account validity
     protected String dbGetPassword(String sql) {
         String psw = "";
         try {
-            // 调用Class.forName()方法加载驱动程序
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("成功加载MySQL驱动！");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            stmt = conn.createStatement();
 
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");//url 账号 密码
-            stmt = conn.createStatement(); //创建Statement对象
-            System.out.println("成功连接到数据库！");
-
-            ResultSet rs = stmt.executeQuery(sql);//创建数据对象
+            ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
                 psw = rs.getString(1);
@@ -86,15 +82,12 @@ public class User {
         return psw;
     }
 
+    // this function aims at updating the database, related to operations like insert, delete, update...
     protected boolean dbUpdateData(String sql) {
         try {
-            // 调用Class.forName()方法加载驱动程序
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("成功加载MySQL驱动！");
-
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");//url 账号 密码
-            stmt = conn.createStatement(); //创建Statement对象
-            System.out.println("成功连接到数据库！");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            stmt = conn.createStatement();
 
             stmt.executeUpdate(sql);
             return true;
@@ -115,6 +108,7 @@ public class User {
         return false;
     }
 
+    // Setter and Getter functions
     protected void setIdentity(String identity) {
         this.identity = identity;
     }
@@ -138,5 +132,4 @@ public class User {
     protected String getIdentity() {
         return identity;
     }
-
 }

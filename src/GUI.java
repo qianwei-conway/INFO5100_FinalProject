@@ -96,7 +96,7 @@ public class GUI {
         chooseIdentityPage();
     }
 
-    public void chooseIdentityPage() {
+    private void chooseIdentityPage() {
         // Choose Identity Page frame
         jfChooseIdentity = new JFrame("Candy Internship");
         jfChooseIdentity.setSize(frameWidth, frameHeight);
@@ -145,7 +145,7 @@ public class GUI {
         radioBtnHR.addActionListener(sliceActionListener);
     }
 
-    public void loginPage() {
+    private void loginPage() {
         // First remove Choose Identity Page
         jfChooseIdentity.setVisible(false);
 
@@ -312,7 +312,7 @@ public class GUI {
     }
 
     // This function aims at checking new account validity.
-    public void clickButtonRegister() {
+    private void clickButtonRegister() {
         // initiate and assign values to object register
         register = new Register();
         register.setIdentity(login.getIdentity());
@@ -342,7 +342,7 @@ public class GUI {
         }
     }
 
-    public void studentPage() {
+    private void studentPage() {
         // Student Page frame
         jfStudent = new JFrame("Hi, " + login.getUsername());
         jfStudent.setSize(frameWidth, frameHeight);
@@ -442,7 +442,7 @@ public class GUI {
     }
 
     // This function aims at refresh the job table after clicking the Filter button
-    public void filterJobs() {
+    private void filterJobs() {
         // empty panel
         jpAllJobs.removeAll();
 
@@ -461,7 +461,7 @@ public class GUI {
         jpAllJobs.add(pane);
     }
 
-    public void hrPage() {
+    private void hrPage() {
         // Student Page frame
         jfHR = new JFrame("Hi, " + login.getUsername());
         jfHR.setSize(frameWidth, frameHeight);
@@ -516,7 +516,7 @@ public class GUI {
         });
     }
 
-    public void stuJobDetailPage() {
+    private void stuJobDetailPage() {
         // First remove the Student Page
         jfStudent.setVisible(false);
 
@@ -580,7 +580,7 @@ public class GUI {
         jbLogout.addActionListener(e -> logout(jfStudentJobDetail));
     }
 
-    public void hrJobDetailPage() {
+    private void hrJobDetailPage() {
         // First remove HR Page
         jfHR.setVisible(false);
 
@@ -688,7 +688,7 @@ public class GUI {
         jbLogout.addActionListener(e -> logout(jfHRJobDetail));
     }
 
-    public void jobInputPage() {
+    private void jobInputPage() {
         // First remove the HR Page and HR Job Detail Page
         jfHR.setVisible(false);
         jfHRJobDetail.setVisible(false);
@@ -929,11 +929,11 @@ public class GUI {
         });
     }
 
-    public void addAJob() {
+    private void addAJob() {
         jobInputPage();
     }
 
-    public void editAJob() {
+    private void editAJob() {
         // job.edit() function aims at returning the job detail that the user uploaded before
         ArrayList<String> detail = job.edit().get(0);
 
@@ -1014,7 +1014,7 @@ public class GUI {
     }
 
     // this function aims at delete a job from database and go back to HR Page and refresh the job table
-    public void deleteAJob() {
+    private void deleteAJob() {
         // First remove Job Input Page
         jfHRJobDetail.setVisible(false);
 
@@ -1032,7 +1032,7 @@ public class GUI {
     }
 
     // this function aims at using returning value to create a JScrollPane
-    public JScrollPane createJobTable(ArrayList<ArrayList<String>> data) {
+    private JScrollPane createJobTable(ArrayList<ArrayList<String>> data) {
         // convert the list value to array
         String[][] tableData = job.aList2Arr(data);
 

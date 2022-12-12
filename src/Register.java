@@ -1,6 +1,5 @@
 import java.sql.DriverManager;
 
-
 public class Register extends User {
     private String reenterPassword;
 

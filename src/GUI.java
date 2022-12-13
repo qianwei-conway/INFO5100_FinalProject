@@ -713,8 +713,12 @@ public class GUI {
 
     private void jobInputPage() {
         // First remove the HR Page and HR Job Detail Page
-        jfHR.setVisible(false);
-        jfHRJobDetail.setVisible(false);
+        if (jfHR != null) {
+            jfHR.setVisible(false);
+        }
+        if (jfHRJobDetail != null) {
+            jfHRJobDetail.setVisible(false);
+        }
 
         // Job Input Page frame
         jfJobInput = new JFrame("Hi, " + login.getUsername());

@@ -58,8 +58,7 @@ public class Job extends User {
         try {
             // call Class.forName() to load the driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // project is the name of database
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
             // from xxx is the table name
             String sql = String.format("select * from candyJob where id = %d", id);
@@ -87,7 +86,7 @@ public class Job extends User {
         ArrayList<ArrayList<String>> li = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("select id,company,position from candyJob where deadline >= '%s'", todayDate);
@@ -114,7 +113,7 @@ public class Job extends User {
         ArrayList<ArrayList<String>> li = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("select id,company,position from candyJob where username = '%s'", getUsername());
@@ -166,7 +165,7 @@ public class Job extends User {
         ArrayList<ArrayList<String>> li = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("select id,company,position from candyJob %s", whereClause);
@@ -193,7 +192,7 @@ public class Job extends User {
     protected boolean addNewJob() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("insert into candyJob (username,company,position,instancy," +
@@ -234,7 +233,7 @@ public class Job extends User {
     protected boolean editAJob() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("UPDATE candyJob set company='%s',position='%s',instancy=%d," +
@@ -271,7 +270,7 @@ public class Job extends User {
     protected boolean deleteAJob() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("delete from candyJob where id = %d", id);
@@ -348,7 +347,7 @@ public class Job extends User {
         ArrayList<ArrayList<String>> li = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("select * from candyJob where id = %d", id);

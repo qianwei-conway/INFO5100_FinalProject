@@ -14,6 +14,11 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class GUI {
+    // initiate MySQL connection variables: just for professor and TAs' test
+    protected String connectionURL;
+    protected String connectionUsername;
+    protected String connectionPassword;
+
     // initiate three instance of Login, Register, Job class
     private Login login;
     private Register register;
@@ -88,6 +93,15 @@ public class GUI {
     private String[] tableHeader = {"id", "Company", "Position"};
 
     public GUI() {
+        // for professor and TAs's test
+        Scanner input = new Scanner(System.in);
+        System.out.println("please enter your database name:");
+        connectionURL = "jdbc:mysql://localhost/" + input.nextLine() + "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+        System.out.println("please enter your database username (in most cases: root):");
+        connectionUsername = input.nextLine();
+        System.out.println("please enter you password for using mysql (username: root)");
+        connectionPassword = input.nextLine();
+
         // Make the window look and feel better.
         JFrame.setDefaultLookAndFeelDecorated(true);
 
@@ -138,6 +152,9 @@ public class GUI {
 
             // After user chooses, then immediately jump to Log In Page
             login = new Login();
+            login.sqlURL = connectionURL;
+            login.sqlUsername = connectionUsername;
+            login.sqlPassword = connectionPassword;
             login.setIdentity(aBtnIdentity.getText());
             loginPage();
         };
@@ -231,6 +248,9 @@ public class GUI {
         if (status.equals("ok")) {
             // Go to identity's page
             job = new Job();
+            job.sqlURL = connectionURL;
+            job.sqlUsername = connectionUsername;
+            job.sqlPassword = connectionPassword;
             jfLogin.setVisible(false);
             if (login.getIdentity().equals("Student")) {
                 // Go to student's page
@@ -315,6 +335,9 @@ public class GUI {
     private void clickButtonRegister() {
         // initiate and assign values to object register
         register = new Register();
+        register.sqlURL = connectionURL;
+        register.sqlUsername = connectionUsername;
+        register.sqlPassword = connectionPassword;
         register.setIdentity(login.getIdentity());
         register.setUsername(jtfUsername.getText());
         register.setPassword(String.valueOf(jpfPassword.getPassword()));

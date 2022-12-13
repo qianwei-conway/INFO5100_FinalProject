@@ -33,7 +33,7 @@ public class Register extends User {
     private Boolean checkUsername() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("select password from candyUser where username = '%s'", getUsername());
@@ -74,7 +74,7 @@ public class Register extends User {
     private void addNewUser() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("insert into candyUser (identity,username,password) values('%s','%s','%s')", getIdentity(), getUsername(), getPassword());

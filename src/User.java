@@ -1,7 +1,13 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class User {
+    // initiate MySQL connection variables: just for professor and TAs' test
+    protected String sqlURL;
+    protected String sqlUsername;
+    protected String sqlPassword;
+
     // initiate variables for a user information
     private String identity;
     private String username;
@@ -19,7 +25,7 @@ public class User {
         ArrayList<ArrayList<String>> list = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             ResultSet rs = stmt.executeQuery(sql);// create data object
@@ -55,7 +61,7 @@ public class User {
         String psw = "";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             ResultSet rs = stmt.executeQuery(sql);
@@ -86,7 +92,7 @@ public class User {
     protected boolean dbUpdateData(String sql) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             stmt.executeUpdate(sql);

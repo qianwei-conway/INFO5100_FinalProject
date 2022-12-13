@@ -17,7 +17,7 @@ public class Login extends User {
     public String checkAccountValidity() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/project?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true", "root", "mysql123");
+            conn = DriverManager.getConnection(sqlURL, sqlUsername, sqlPassword);
             stmt = conn.createStatement();
 
             String sql = String.format("select password from candyUser where username = '%s' AND identity = '%s'", getUsername(), getIdentity());

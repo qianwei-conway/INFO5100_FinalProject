@@ -80,3 +80,9 @@ Click **"Apply"** and then **"OK"**
 At the beginning, you need to input something related to your database in the console.
 
 But this is **local operation** so you don't have to be afraid of leaking privacy!
+
+<br> 
+
+I have tried my best to make the steps detailed. But as known, configuring environment is the hardest part of doing a project......
+
+So if you find any step which doesn't work well on your computer, please contact me and I wanna find a solution!
